@@ -6,7 +6,7 @@
  *   weekStartDay: int,
  *   formatDate: function(currentDate: Date, dayOfMonth: int, siblingMonth:  int)
  *   formatSiblingMonthDate: function(currentDate: Date, dayOfMonth: int, siblingMonth: int)
- *   formatHeader: function(currentDate: Date, dayOfWeek: int)
+ *   formatHeader: function(currentDate: Date, position: int)
  * }
  */
 
@@ -51,7 +51,7 @@ module.exports = function (date, opts) {
       row.push(format(currentDate, currentDay, siblingMonth))
 
       if(opts.formatHeader && w === 0)
-        headers.push(opts.formatHeader(currentDate, currentDay)) 
+        headers.push(opts.formatHeader(currentDate, d)) 
     }
     day += 7
     lines.push(row)

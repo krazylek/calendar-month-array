@@ -29,7 +29,7 @@ output (could vary for your local time):
     ...
 ```
 
-With some formating and optional headers:
+With some formatting and optional headers:
 
 ``` js
 var sprintf = require('sprintf')
@@ -68,9 +68,11 @@ Return an array of weeks `weeks` for the month given in `date`, a `Date` instanc
 * `opts.formatDate(currentDate, dayOfMonth, siblingMonth)` - specify how to format each cell, default is returning Date object.
   * `currentDate` - the date object.
   * `dayOfMonth` - the relative day in the month.
-  * `siblingMonth` - the month offset, -1 for previous, 0 is current, 1 is next.
+  * `siblingMonth` - the month offset, `-1` for previous, `0` is current, `1` is next.
 * `opts.formatSiblingMonthDate(currentDate, dayOfMonth, dayIndex)` - specify how to format cells for sibling month, default use `opts.formatDate`.
-* `opts.formatHeader(currentDate: Date, dayOfWeek: int) - specify how to format an optional header row (added only if formatHeader is defined)
+* `opts.formatHeader(currentDate, position)` - specify how to format an optional header row (added only if `opts.formatHeader` is defined)
+  *  `currentDate` - date object similar to first row of days
+  *  `position` - int, cell index
 
 
 # license
