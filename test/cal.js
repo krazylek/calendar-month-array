@@ -8,18 +8,20 @@ test('calendar starts on Sunday (default)', function (t) {
   var expectedCell = 0
   var expectedRow = 0 
   var cal = calendar(calendarDate)
-  t.equal(cal[expectedRow][expectedCell].toISOString(), expectedDay.toISOString(), 'default week starts on Sunday')
+  t.deepEqual(cal[expectedRow][expectedCell], expectedDay, 'default week starts on Sunday')
   t.end()
 })
 
-test('calendar starts on opts.weekStartDay = 1 (Monday), 1st cell could be in previous month', function (t) {
+test('calendar starts on Monday with opts.weekStartDay = 1', function (t) {
+  var startDay = 1
   var expectedFirstDay = new Date('1994-12-26 00:00:00')
   var firstMonday = new Date('1995-01-02 00:00:00') // it's a Monday
   var expectedCell = 0 
   var expectedRow = 1 // as there is a day before, it comes in second row 
-  var cal = calendar(calendarDate, { weekStartDay: 1 })
-  t.equal(cal[0][0].toISOString(), expectedFirstDay.toISOString(), 'first cell is previous month')
-  t.equal(cal[expectedRow][expectedCell].toISOString(), firstMonday.toISOString(), 'Mondays are in first col')
+  var cal = calendar(calendarDate, { weekStartDay: startDay })
+  t.equal(cal[0][0].getDay(), startDay)
+  t.deepEqual(cal[0][0], expectedFirstDay, 'first cell is previous month')
+  t.deepEqual(cal[expectedRow][expectedCell], firstMonday, 'Mondays are in first col')
   t.end()
 })
 
@@ -28,7 +30,7 @@ test('calendar last cell contains next month (sometimes)', function (t) {
   var cal = calendar(calendarDate)
   var lastRow = cal.length - 1
   var lastCell = 6
-  t.equal(cal[lastRow][lastCell].toISOString(), expectedDay.toISOString())
+  t.deepEqual(cal[lastRow][lastCell], expectedDay)
   t.end()
 })
 
@@ -42,10 +44,18 @@ test('calendar first row contains headers if formatHeaders is set', function (t)
   t.end()
 })
 
+test('header position is returned', function (t) {
+  var expectedRow = [0,1,2,3,4,5,6]
+  var formatHeader = (date, pos) => pos
+  var cal = calendar(calendarDate, { formatHeader })
+  t.deepEqual(cal[0], expectedRow)
+  t.end()
+})
+
 test('calendar first row does not contains headers if formatHeaders is NOT set', function (t) {
   var expectedRows = 5
   var cal = calendar(calendarDate)
   t.equal(cal.length, expectedRows)
-  t.notEqual(cal[0][0].toISOString(), cal[1][0].toISOString(), expectedRows)
+  t.notDeepEqual(cal[0][0], cal[1][0])
   t.end()
 })
