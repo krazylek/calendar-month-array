@@ -14,7 +14,7 @@ var weeks = calendar()
 console.log(weeks)
 ```
 
-output (could vary for your local time):
+output:
 
 ```
 [ [ 2017-05-27T22:00:00.109Z,
@@ -28,6 +28,9 @@ output (could vary for your local time):
     2017-06-04T22:00:00.109Z,
     ...
 ```
+
+NOTE: event if you can't see it on the console, they are `Date` objects, not ISO date strings!
+
 
 With some formatting and optional headers:
 
