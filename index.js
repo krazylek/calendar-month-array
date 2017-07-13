@@ -4,8 +4,13 @@
  * date: Date
  * opts: object {
  *   weekStartDay: int,
- *   formatDate: function(currentDate: Date, dayOfMonth: int, siblingMonth:  int)
- *   formatSiblingMonthDate: function(currentDate: Date, dayOfMonth: int, siblingMonth: int)
+ *   formatDate: function(currentDate: Date, info: Object {
+ *     dayOfMonth: int, 
+ *     siblingMonth:  int,
+ *     week: int,
+ *     position: int
+ *   })
+ *   formatSiblingMonthDate: function(currentDate: Date, info: Object)
  *   formatHeader: function(currentDate: Date, position: int)
  * }
  */
@@ -47,8 +52,13 @@ module.exports = function (date, opts) {
       var currentDate = createDateOffset(first, currentDay)
       var siblingMonth = checkSiblingMonth(currentDay) 
       var format = siblingMonth ? formatSiblingMonthDate : formatDate
-      
-      row.push(format(currentDate, currentDay, siblingMonth))
+
+      row.push(format(currentDate, {
+        dayOfMonth: currentDay, 
+        siblingMonth,
+        week: w,
+        position: d
+      }))
 
       if(opts.formatHeader && w === 0)
         headers.push(opts.formatHeader(currentDate, d)) 

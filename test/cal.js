@@ -2,6 +2,7 @@ var calendar = require('../')
 var test = require('tape')
 
 var calendarDate = new Date('1995-01-01 00:00:00')
+var lastCell = 6
 
 test('calendar starts on Sunday (default)', function (t) {
   var expectedDay = new Date('1995-01-01 00:00:00') // it's a Sunday
@@ -29,7 +30,6 @@ test('calendar last cell contains next month (sometimes)', function (t) {
   var expectedDay = new Date('1995-02-04 00:00:00')
   var cal = calendar(calendarDate)
   var lastRow = cal.length - 1
-  var lastCell = 6
   t.deepEqual(cal[lastRow][lastCell], expectedDay)
   t.end()
 })
@@ -57,5 +57,50 @@ test('calendar first row does not contains headers if formatHeaders is NOT set',
   var cal = calendar(calendarDate)
   t.equal(cal.length, expectedRows)
   t.notDeepEqual(cal[0][0], cal[1][0])
+  t.end()
+})
+
+test('formatDate alters result', function (t) {
+  var expectedFirstDayFormatting = '1-1'
+  var cal = calendar(calendarDate, { formatDate: date => [date.getMonth() + 1, date.getDate()].join('-') })
+  t.equal(cal[0][0], expectedFirstDayFormatting)
+  t.end()
+})
+
+test('formatDate and formatSiblingMonthDate alters their respective dates', function (t) {
+  var expectedFirstDayFormatting = '1-1'
+  var expectedLastDayFormatting = 'na'
+  var cal = calendar(calendarDate, { 
+    formatDate: date => [date.getMonth() + 1, date.getDate()].join('-'),
+    formatSiblingMonthDate: () => 'na'
+  })
+  t.equal(cal[0][0], expectedFirstDayFormatting)
+  t.equal(cal[cal.length -1][lastCell], expectedLastDayFormatting)
+  t.end()
+})
+
+test('formatDate works for sibling month as well if formatSiblingMonthDate is not defined', function (t) {
+  var expectedLastDayFormatting = '2-4'
+  var cal = calendar(calendarDate, { formatDate: date => [date.getMonth() + 1, date.getDate()].join('-') })
+  t.equal(cal[cal.length -1][lastCell], expectedLastDayFormatting)
+  t.end()
+})
+
+test('formatDate info object is correct', function (t) {
+  var expectedFirstDayInfo = {
+    dayOfMonth: 1, 
+    siblingMonth: 0,
+    week: 0,
+    position: 0
+  }
+  var expectedLastDayInfo = { 
+    dayOfMonth: 35, 
+    siblingMonth: 1,
+    week: 4,
+    position: 6
+  }
+  var cal = calendar(calendarDate, { formatDate: (date, info) => info })
+  t.deepEqual(cal[0][0], expectedFirstDayInfo)
+  t.deepEqual(cal[cal.length -1][lastCell], expectedLastDayInfo)
   t.end()
 })

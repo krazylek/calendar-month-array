@@ -68,14 +68,17 @@ var calendar = require('calendar-month-array')
 Return an array of weeks `weeks` for the month given in `date`, a `Date` instance.
 
 * `opts.weekStartDay` - set the first day of week, default 0 (Sunday). Monday would be 1.
-* `opts.formatDate(currentDate, dayOfMonth, siblingMonth)` - specify how to format each cell, default is returning Date object.
+* `opts.formatDate(currentDate, info)` - specify how to format each cell, default is returning Date object.
   * `currentDate` - the date object.
-  * `dayOfMonth` - the relative day in the month.
-  * `siblingMonth` - the month offset, `-1` for previous, `0` is current, `1` is next.
-* `opts.formatSiblingMonthDate(currentDate, dayOfMonth, dayIndex)` - specify how to format cells for sibling month, default use `opts.formatDate`.
+  * `info` - some details about the date.
+    * `info.dayOfMonth` - the relative day in the month.
+    * `info.siblingMonth` - the month offset, `-1` for previous, `0` is current, `1` is next.
+    * `info.week` - week index, starting at 0 for first week presented.
+    * `info.position` - position index in week, starting at 0 for first day of week (does not depend on `opts.weekStartDay`).
+* `opts.formatSiblingMonthDate(currentDate, info)` - specify how to format cells for sibling month, default to `opts.formatDate`.
 * `opts.formatHeader(currentDate, position)` - specify how to format an optional header row (added only if `opts.formatHeader` is defined)
-  *  `currentDate` - date object similar to first row of days
-  *  `position` - int, cell index
+  *  `currentDate` - date object similar to first row of days.
+  *  `position` - position index in week.
 
 
 # license
