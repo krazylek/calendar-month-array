@@ -104,3 +104,12 @@ test('formatDate info object is correct', function (t) {
   t.deepEqual(cal[cal.length -1][lastCell], expectedLastDayInfo)
   t.end()
 })
+
+test('formatHeader position is correct', function (t) {
+  var expectedFirstDayPosition = 0
+  var expectedLastDayPosition = 6
+  var cal = calendar(calendarDate, { formatHeader: (date, pos) => pos })
+  t.equal(cal[0][0], expectedFirstDayPosition)
+  t.equal(cal[0][lastCell], expectedLastDayPosition)
+  t.end()
+})
