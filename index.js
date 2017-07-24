@@ -55,7 +55,7 @@ module.exports = function (date, opts) {
 
       row.push(format(currentDate, {
         dayOfMonth: currentDay, 
-        siblingMonth,
+        siblingMonth: siblingMonth,
         week: w,
         position: d
       }))
