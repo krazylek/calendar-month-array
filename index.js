@@ -40,8 +40,9 @@ module.exports = function (date, opts) {
   var weekStartDay = opts.weekStartDay || 0
   var formatDate = opts.formatDate || function (date) { return date }
   var formatSiblingMonthDate = opts.formatSiblingMonthDate || formatDate
-  var day = 1 - (7 + first.getDay() - weekStartDay) % 7
-  var weeks = Math.ceil((last.getDate() - day) / 7)
+  var firstDaysToComplete = (7 + first.getDay() - weekStartDay) % 7
+  var day = 1 - firstDaysToComplete
+  var weeks = Math.ceil((last.getDate() + firstDaysToComplete) / 7)
   var lines = []
   var headers = []
 

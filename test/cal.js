@@ -18,11 +18,19 @@ test('calendar starts on Monday with opts.weekStartDay = 1', function (t) {
   var expectedFirstDay = new Date('1994-12-26 00:00:00')
   var firstMonday = new Date('1995-01-02 00:00:00') // it's a Monday
   var expectedCell = 0 
-  var expectedRow = 1 // as there is a day before, it comes in second row 
+  var expectedRow = 1 // as there is a day before, it comes in second row
   var cal = calendar(calendarDate, { weekStartDay: startDay })
   t.equal(cal[0][0].getDay(), startDay)
   t.deepEqual(cal[0][0], expectedFirstDay, 'first cell is previous month')
   t.deepEqual(cal[expectedRow][expectedCell], firstMonday, 'Mondays are in first col')
+  t.end()
+})
+
+test('calendar take into account weekStartDay for weeks row', function (t) {
+  var startDay = 1
+  var expectedRows = 6
+  var cal = calendar(new Date(2017, 9), { weekStartDay: startDay })
+  t.equal(cal.length, expectedRows)
   t.end()
 })
 
