@@ -1,87 +1,63 @@
-/**
- * Returns an array of weeks, each containing an array of dates
- *
- * date: Date
- * opts: object {
- *   weekStartDay: int,
- *   formatDate: function(currentDate: Date, info: Object {
- *     dayOfMonth: int, 
- *     siblingMonth:  int,
- *     week: int,
- *     position: int
- *   })
- *   formatSiblingMonthDate: function(currentDate: Date, info: Object)
- *   formatHeader: function(currentDate: Date, position: int)
- * }
- */
-
-module.exports = function (date, opts) {
-  if (typeof date === 'string') date = new Date(date)
-  if (!date) date = new Date()
-  if (Object.prototype.toString.call(date) !== '[object Date]') {
-    opts = date
-    date = new Date()
+module.exports = function (monthDate, opts) {
+  if (typeof monthDate === 'string') monthDate = new Date(monthDate)
+  if (!monthDate) monthDate = new Date()
+  if (Object.prototype.toString.call(monthDate) !== '[object Date]') {
+    opts = monthDate
+    monthDate = new Date()
   }
   if (!opts) opts = {}
-
-  var first = new Date(date)
-  first.setHours(0)
-  first.setMinutes(0)
-  first.setSeconds(0)
-  first.setDate(1)
-
-  var last = new Date(date)
-  last.setHours(0)
-  last.setMinutes(0)
-  last.setSeconds(0)
-  last.setMonth(last.getMonth()+1)
-  last.setDate(0)
-
-  var weekStartDay = opts.weekStartDay || 0
   var formatDate = opts.formatDate || function (date) { return date }
   var formatSiblingMonthDate = opts.formatSiblingMonthDate || formatDate
-  var firstDaysToComplete = (7 + first.getDay() - weekStartDay) % 7
-  var day = 1 - firstDaysToComplete
-  var weeks = Math.ceil((last.getDate() + firstDaysToComplete) / 7)
-  var lines = []
-  var headers = []
+  var weekStartDay = opts.weekStartDay || 0
+
+  var first = new Date(monthDate.getYear(), monthDate.getMonth(), 1)
+  var last = new Date(monthDate.getYear(), monthDate.getMonth() + 1, 0)
+
+  var monthFirstDayPosition = (7 + first.getDay() - weekStartDay) % 7
+  var calendarLastDay =  last.getDate() + monthFirstDayPosition
+  var weeks = Math.ceil((calendarLastDay + monthFirstDayPosition) / 7)
+  var lines = new Array(weeks)
+  var headers = new Array(7)
+  var dayOfMonth = 1 - monthFirstDayPosition
 
   for (var w = 0; w < weeks; w++) {
-    var row = []
+    var row = new Array(7)
     for (var d = 0; d < 7; d++) {
-      var currentDay = day + d
-      var currentDate = createDateOffset(first, currentDay)
-      var siblingMonth = checkSiblingMonth(currentDay) 
+      var date = offsetDate(first, dayOfMonth)
+      var siblingMonth = checkSiblingMonth(dayOfMonth, last.getDate()) 
       var format = siblingMonth ? formatSiblingMonthDate : formatDate
 
-      row.push(format(currentDate, {
-        dayOfMonth: currentDay, 
+      row[d] = format(date, {
+        dayOfMonth: dayOfMonth, 
         siblingMonth: siblingMonth,
         week: w,
         position: d
-      }))
+      })
 
       if(opts.formatHeader && w === 0)
-        headers.push(opts.formatHeader(currentDate, d)) 
+        headers[d] = opts.formatHeader(date, d)
+
+      dayOfMonth++
     }
-    day += 7
-    lines.push(row)
+    lines[w] = row
   }
 
   if(opts.formatHeader)
     lines.unshift(headers)
 
   return lines
-
-  function createDateOffset(date, offset) {
-    var newDate = new Date(date)
-    newDate.setDate(offset)
-    return newDate
-  }
   
-  function checkSiblingMonth(day) {
-    return day <= 0 ? -1 :
-      day > last.getDate() ? 1 :
-      0
-  }
 }
+
+function checkSiblingMonth(day, lastDay) {
+  return day <= 0 ? -1 :
+    day > lastDay ? 1 :
+    0
+}
+
+function offsetDate(date, offset) {
+  var newDate = new Date(date)
+  newDate.setDate(offset)
+  return newDate
+}
+
