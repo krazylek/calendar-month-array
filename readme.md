@@ -3,7 +3,7 @@
 Generates a calendar array with the days of a single month, organized by week.
 
 This is a fork of module [calendar-month-string](https://github.com/substack/calendar-month-string) by Substack. 
-The goal is to return a basic date array in place of a formatted string.
+The goal is to return dates arrays in place of a formatted string.
 
 
 # example
@@ -29,7 +29,7 @@ output:
     ...
 ```
 
-NOTE: event if you can't see it on the console, they are `Date` objects, not ISO date strings!
+NOTE: these are`Date`objects, not ISO date strings!
 
 
 With some formatting and optional headers:
@@ -74,11 +74,11 @@ Return an array of weeks `weeks` for the month given in `date`, a `Date` instanc
     * `info.dayOfMonth` - the relative day in the month.
     * `info.siblingMonth` - the month offset, `-1` for previous, `0` is current, `1` is next.
     * `info.week` - week index, starting at 0 for first week presented.
-    * `info.position` - position index in week, starting at 0 for first day of week (does not depend on `opts.weekStartDay`).
-* `opts.formatSiblingMonthDate(currentDate, info)` - specify how to format cells for sibling month, default to `opts.formatDate`.
-* `opts.formatHeader(currentDate, position)` - specify how to format an optional header row (added only if `opts.formatHeader` is defined)
-  *  `currentDate` - date object similar to first row of days.
-  *  `position` - position index in week.
+    * `info.position` - day index, or position in week, startting at 0.
+* `opts.formatSiblingMonthDate(currentDate, info)` - define how to format cells for sibling month, default to `opts.formatDate`.
+* `opts.formatHeader(currentDate, position)` - define how to format an optional header row (added only if `opts.formatHeader` is defined)
+  *  `currentDate` - date object, just to know the day of week.
+  *  `position` - position in week.
 
 
 # license
@@ -96,6 +96,4 @@ npm install calendar-month-array
 # See also
 
 - https://github.com/substack/calendar-month-string Original work
-- https://github.com/kiltjs/month A list of days in a month
-- https://github.com/spatie/calendar-months similar work, requires moment.js
-- https://github.com/diegoteixeir4/purecalendar.js
+- https://github.com/krazylek/calendar-month-view A fully customizable html calendar
