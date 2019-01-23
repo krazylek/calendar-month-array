@@ -1,6 +1,6 @@
 {
   "name": "calendar-month-array",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Generates a calendar array with the days of a single month organized by week",
   "main": "index.js",
   "scripts": {
