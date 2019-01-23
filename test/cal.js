@@ -4,6 +4,16 @@ var test = require('tape')
 var calendarDate = new Date('1995-01-01 00:00:00')
 var lastCell = 6
 
+test('proper first day and last day are found', function (t) {
+  var date = new Date('2019-01-01 00:00:00')
+  var expectedFirstDay = new Date('2018-12-30 00:00:00')
+  var expectedLastDay = new Date('2019-02-02 00:00:00')
+  var cal = calendar(date)
+  t.deepEqual(cal[0][0], expectedFirstDay, 'first cell is 30th of dec')
+  t.deepEqual(cal[cal.length-1][6], expectedLastDay, 'last day is 2nd of feb')
+  t.end()
+})
+
 test('calendar starts on Sunday (default)', function (t) {
   var expectedDay = new Date('1995-01-01 00:00:00') // it's a Sunday
   var expectedCell = 0

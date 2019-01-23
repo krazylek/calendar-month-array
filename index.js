@@ -10,12 +10,12 @@ module.exports = function (monthDate, opts) {
   var formatSiblingMonthDate = opts.formatSiblingMonthDate || formatDate
   var weekStartDay = opts.weekStartDay || 0
 
-  var first = new Date(monthDate.getYear(), monthDate.getMonth(), 1)
-  var last = new Date(monthDate.getYear(), monthDate.getMonth() + 1, 0)
+  var first = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1)
+  var last = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0)
 
   var monthFirstDayPosition = (7 + first.getDay() - weekStartDay) % 7
   var calendarLastDay =  last.getDate() + monthFirstDayPosition
-  var weeks = Math.ceil((calendarLastDay + monthFirstDayPosition) / 7)
+  var weeks = Math.ceil(calendarLastDay / 7)
   var lines = new Array(weeks)
   var headers = new Array(7)
   var dayOfMonth = 1 - monthFirstDayPosition
