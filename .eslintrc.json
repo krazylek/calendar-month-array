@@ -1,0 +1,8 @@
+{
+  "root": true,
+  "rules": {
+    "no-trailing-spaces": ["warn"],
+    "no-var": ["warn"],
+    "no-var-requires": ["warn"]
+  }
+}
